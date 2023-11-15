@@ -32,7 +32,9 @@ const puppeteer = require('puppeteer');
         })
 
         const [page] = await browser.pages()
-        const sessionId = `67d605fd9bbf315494f786f9f5bc2581`
+        const sessionId =
+            // `3abd347c205f9f68e1b1392a0f74e187`
+            `67d605fd9bbf315494f786f9f5bc2581`
 
         await page.setCookie({
             name: `sessionid`,
@@ -49,7 +51,15 @@ const puppeteer = require('puppeteer');
             sourceScheme: 'Secure',
             sourcePort: 443
         })
-        await page.goto(`https://tiktok.com/`)
+        await page.goto(`https://www.tiktok.com/creator#/upload?scene=creator_center`)
+
+        const file_input = `[type="file"]`
+        await page.waitForSelector(file_input)
+        const fileInput = await page.$(file_input)
+        await fileInput.uploadFile(`video-1.mp4`)
+
+        const post_button = `.btn-post button:not([disabled])`
+        click(page, post_button)
         // await browser.close()
     } catch (e) {
         console.error(e)
@@ -63,11 +73,11 @@ const click = async function (page, selector) {
 }
 
 const type = async function (page, selector, letters) {
-    await page.waitForSelector(selector);
-    await page.hover(selector);
-    await page.focus(selector);
-    await page.keyboard.type(letters);
+    await page.waitForSelector(selector)
+    await page.hover(selector)
+    await page.focus(selector)
+    await page.keyboard.type(letters)
 }
 
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-const random = function (min, max) { return Math.floor(Math.random() * (max - min + 1) + min) }  
+const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+const random = function (min, max) { return Math.floor(Math.random() * (max - min + 1) + min) }
